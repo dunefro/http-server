@@ -1,14 +1,13 @@
 package main
 
 import (
-	"basicauth/data"
 	"crypto/sha256"
 	"crypto/subtle"
 	"fmt"
+	"github.com/dunefro/http-server/data"
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 )
 
@@ -20,20 +19,10 @@ type application struct {
 }
 
 func main() {
-	// fmt.Println(data.GetData())
 	app := application{}
-
 	app.auth.username, app.auth.password = getUsernameAndPassword()
-	// app.auth.password = os.Getenv("AUTH_PASSWORD")
 
-	if app.auth.username == "" {
-		log.Fatal("Don't you have a name or what?")
-	}
-	if app.auth.password == "" {
-		log.Fatal("How can I possibly authenticate you without a password?")
-	}
-
-	// a multiplexer which is used to server requests
+	// a multiplexer which is used to serve requests
 	mux := http.NewServeMux()
 	mux.HandleFunc("/unprotected", app.unprotectedHandler)
 	mux.HandleFunc("/protected", app.basicAuth(app.protectedHandler))
@@ -53,12 +42,18 @@ func main() {
 	}
 	log.Println("Starting server on", srv.Addr)
 
-	// For https uncomment below
-	// err := srv.ListenAndServeTLS("./cert.pem", "./mykey.pem")\
+	_, ok := os.LookupEnv("ENABLE_SSL")
+	// if tls is required
+	if ok {
+		// create key-pair here
+		// err := srv.ListenAndServeTLS("./cert.pem", "./mykey.pem")
+		// log.Fatal(err)
+		log.Println("Do nothng right now")
+	} else {
+		err := srv.ListenAndServe()
+		log.Fatal(err)
 
-	// For http
-	err := srv.ListenAndServe()
-	log.Fatal(err)
+	}
 }
 
 func (a *application) unprotectedHandler(w http.ResponseWriter, r *http.Request) {
@@ -95,23 +90,15 @@ func (app *application) basicAuth(hf http.HandlerFunc) http.HandlerFunc {
 	})
 }
 
-func getUsernameAndPassword() (string, string) {
+func getUsernameAndPassword() (username string, password string) {
 
-	data, err := os.ReadFile("./creds.txt")
-	if err != nil {
-		panic(err.Error)
+	username, ok := os.LookupEnv("AUTH_USERNAME")
+	if !ok {
+		panic("emtpy username. set the value of env variable AUTH_USERNAME")
 	}
-	var username, password string
-	for _, str := range strings.Split(string(data), "\n") {
-		kv := strings.Split(str, "=")
-		if kv[0] == "AUTH_USERNAME" {
-			username = kv[1]
-		} else if kv[0] == "AUTH_PASSWORD" {
-			password = kv[1]
-		} else {
-			fmt.Errorf("key %s is invalid", kv[0])
-
-		}
+	password, ok = os.LookupEnv("AUTH_PASSWORD")
+	if !ok {
+		panic("emtpy password. set the value of env variable AUTH_PASSWORD")
 	}
-	return username, password
+	return
 }
