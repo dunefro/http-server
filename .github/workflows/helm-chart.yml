@@ -14,6 +14,5 @@ jobs:
           token: ${{ secrets.HELM_PACKAGE_TOKEN }}
           charts_dir: charts
           owner: dunefro
-          branch: gh-pages
           commit_username: dunefro
           commit_email: dunefro@gmail.com
