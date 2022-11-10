@@ -1,0 +1,19 @@
+name: release-chart
+on:
+  push:
+    tags: 'chart-*'
+
+jobs:
+  release-chart:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish Helm chart
+        uses: stefanprodan/helm-gh-pages@1.6.0
+        with:
+          token: ${{ secrets.HELM_PACKAGE_TOKEN }}
+          charts_dir: charts
+          owner: dunefro
+          branch: gh-pages
+          commit_username: dunefro
+          commit_email: dunefro@gmail.com
