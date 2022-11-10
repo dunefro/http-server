@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Publish Helm chart
-        uses: stefanprodan/helm-gh-pages@1.6.0
+        uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.HELM_PACKAGE_TOKEN }}
           charts_dir: charts
