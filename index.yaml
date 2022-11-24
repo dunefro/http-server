@@ -3,12 +3,12 @@ entries:
   http-server:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-11-24T11:25:39.401882444Z"
+    created: "2022-11-24T11:27:31.92793351Z"
     description: A Helm chart for Kubernetes
-    digest: 8b7c5a79d92313655db3fefbdfdcff33b097852e694fb2e90de24cbac32f22dd
+    digest: 0f99f8d48dbfa7340ce8cae1b07d966d6ed785e7dde0eedc0a454e0d2744ea3e
     name: http-server
     type: application
     urls:
     - https://dunefro.github.io/http-server/http-server-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-24T11:25:39.401132039Z"
+generated: "2022-11-24T11:27:31.927319303Z"
