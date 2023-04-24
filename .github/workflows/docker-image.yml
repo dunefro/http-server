@@ -31,4 +31,4 @@ jobs:
         context: .
         push: true
         tags: dunefro/http-server:${{ github.ref_name }}
-        platform: linux/amd64,linux/arm64
+        platforms: linux/amd64,linux/arm64
